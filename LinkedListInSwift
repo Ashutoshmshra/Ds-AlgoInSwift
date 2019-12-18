@@ -1,0 +1,147 @@
+import UIKit
+
+public class Node<T>{
+    var value: T
+    public init(value:T){
+      self.value = value
+    }
+    var next:Node<T>?
+    weak var previous:Node<T>?
+}
+
+public class LinkedList<T>{
+    fileprivate var head:Node<T>?
+    private var tail:Node<T>?
+    public var isEmpty:Bool {
+        return head == nil
+    }
+    public var first:Node<T>?{
+        return head
+    }
+    public var last:Node<T>?{
+        return tail
+    }
+    public func append(_ value:T){
+        let newNode = Node(value: value)
+        if let tail = tail{
+             newNode.previous = tail
+             tail.next = newNode
+        }
+        else{
+            head = newNode
+        }
+        tail = newNode
+    }
+    public func getNode(at index:Int)-> Node<T>?{
+        if index>=0{
+        var node = head
+        var i = index
+        while node != nil{
+            if i == 0 { return node}
+            node = node!.next
+            i -= 1
+            }
+        }
+            
+        return nil
+    }
+    
+    public func removeAllNode(){
+        head = nil
+        tail = nil
+    }
+    
+    public func removeNode(node:Node<T>)-> T{
+        let next = node.next
+        let prev = node.previous
+        if let prev = prev{
+            prev.next = next
+        }
+        else{
+            head = next
+        }
+        next?.previous = prev
+        if next == nil{
+            tail = prev
+        }
+        node.next = nil
+        node.previous = nil
+        
+        return node.value
+    }
+    public func sortLinkedList(list:LinkedList<Int>)-> LinkedList<Int>{
+        var sortedList = LinkedList<Int>()
+        var node = list.first
+        var secNode = list.first
+       // print("Node is \(node?.value)")
+        var nextNode = node
+        while node != nil{
+            nextNode = nextNode?.next
+            secNode = list.first
+            while secNode?.next != nil{
+                if (secNode!.value) > (secNode?.next!.value)!{
+                    //print("Node value is \(secNode!.value) and NodeNext value is \((secNode?.next!.value)!)")
+                    let temp = secNode?.value
+                    secNode?.value = (secNode?.next!.value)!
+                    secNode?.next!.value = temp!
+                }
+                else{
+                    
+                }
+                secNode = secNode?.next
+            }
+            node = nextNode
+        }
+        
+        return list
+    }
+    
+    
+}
+
+
+
+
+extension LinkedList:CustomStringConvertible{
+    public var description: String {
+        var text = "[ "
+        var node = head
+        
+        while node != nil{
+            //print("\(node!.value)")
+            text += "\(node!.value)"
+            node = node?.next
+            if node != nil {
+                text += "-> "
+            }
+        }
+        return text + " ]"
+    }
+}
+//print(mobileType.getNode(at: 2)!)
+let mobileType = LinkedList<String>()
+mobileType.append("iPhone")
+mobileType.append("Android")
+mobileType.append("Windows")
+mobileType.append("Blackberry")
+//mobileType.removeNode(node: Node.init(value: "Windows"))
+//mobileType.removeAllNode()
+//print(mobileType.removeNode(node: Node.init(value: "Windows")))
+//print(mobileType)
+//mobileType.removeNode(node: Node(value: "Windows"))
+print("Mobile Linked list data is here:- ")
+print(mobileType)
+
+var numbers = LinkedList<Int>()
+numbers.append(5)
+numbers.append(11)
+numbers.append(2)
+numbers.append(98)
+numbers.append(3)
+numbers.append(22)
+numbers.append(13)
+numbers.append(43)
+print("Linked List before sorting:- ")
+print(numbers)
+print("Linked List after sorting:- ")
+print(numbers.sortLinkedList(list: numbers))
