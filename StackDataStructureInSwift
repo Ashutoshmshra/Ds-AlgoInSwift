@@ -1,0 +1,78 @@
+import UIKit
+
+
+struct Stack<T>{
+    fileprivate var stackData:[T] = []
+
+    var isEmpty:Bool{
+        return stackData.isEmpty
+    }
+    var count:Int{
+        return stackData.count
+    }
+
+    mutating func push(_ text:T){
+        stackData.append(text)
+    }
+    mutating func pop()-> T? {
+        return stackData.popLast()
+    }
+    func peek()->T?{
+        return (stackData.last)
+    }
+}
+
+extension Stack:CustomStringConvertible{
+    var description: String{
+        let topDivider = "-------Stack--------\n"
+        let bottomDivider = "\n-------------------\n"
+        let stackElementData =  stackData.map{"\($0)"}.reversed().joined(separator: "\n")
+        return topDivider + stackElementData + bottomDivider
+
+
+    }
+}
+
+var tStack = Stack<Any>()
+tStack.push("hello")
+//(tStack.peek() ?? "")
+tStack.push("Stack")
+//print(tStack)
+tStack.push(1)
+tStack.push(3)
+tStack.push(33.098)
+tStack.peek()
+tStack.pop()
+tStack.peek()
+print(tStack)
+// MARK:- Sorting of stck data
+print("Before Sorting of stck data \n")
+var sortStack = Stack<Int>()
+sortStack.push(32)
+sortStack.push(3)
+sortStack.push(22)
+sortStack.push(72)
+sortStack.push(39)
+sortStack.push(11)
+sortStack.push(98)
+print(sortStack)
+
+print("After Sorting of stck data \n")
+//func sortStackData()-> Stack<Int>{
+    func sortStackData(){
+    var tempStack = Stack<Int>()
+      while !sortStack.isEmpty {
+     let temp:Int = sortStack.pop()!
+    //var tempStack = Stack<Int>()
+    while !tempStack.isEmpty && tempStack.peek()! > temp{
+        sortStack.push(tempStack.pop()!)
+    }
+    tempStack.push(temp)
+        // print(tempStack)
+   }
+   // return tempStack
+    print(tempStack)
+}
+sortStackData()
+//print(sortStackData())
+
